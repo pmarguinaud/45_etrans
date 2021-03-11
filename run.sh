@@ -3,8 +3,13 @@
 ulimit -s unlimited
 export OMP_NUM_THREADS=1
 
-#DR_HOOK_NOT_MPI=1 ./bin/AATESTPROG --namelist fort.4.20x20 --lmpoff --time 0 > AATESTPROG.eo 2>&1
-mpirun -np 2 ./bin/AATESTPROG --namelist fort.4.20x20 --lmpoff --time 0 > AATESTPROG.eo 2>&1
+set -x
+set -e
+
+\rm -f AATESTPROG.fa snapshot_0000.png
+
+#DR_HOOK_NOT_MPI=1 ./bin/AATESTPROG --namelist fort.4.20x20 --lmpoff --time 1 > AATESTPROG.eo 2>&1
+mpirun -np 2 ./bin/AATESTPROG --namelist fort.4.20x20 --time 3 > AATESTPROG.eo 2>&1
 
 /home/ms/fr/sor/3d/glgrib/glgrib.sh AATESTPROG.fa%ZZZFFFFF
 mv snapshot_0000.png ~/tmp/.
