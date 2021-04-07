@@ -575,10 +575,14 @@ IF (MYPROC == 1) THEN
        
         IF (LELAM) THEN
           ZX = REAL (JLON-1, JPRB) / REAL (NDLON, JPRB)
-          ZY = REAL (JLAT-1, JPRB) / REAL (NDLON, JPRB)
-          ZVAL = ZX * (1._JPRB - ZX) * ZY * (1._JPRB - ZY) * 4._JPRB + 0.5
-          ZVALDX = (1._JPRB - 2._JPRB * ZX) * ZY * (1._JPRB - ZY) * 4._JPRB
-          ZVALDY = (1._JPRB - 2._JPRB * ZY) * ZX * (1._JPRB - ZX) * 4._JPRB
+          ZY = REAL (JLAT-1, JPRB) / REAL (NDGLG, JPRB)
+!         ZVAL = COS (4. * RPI * ZX) * SIN (6. * RPI * ZY)
+!         ZVALDX = - 4. * RPI * SIN (4. * RPI * ZX) * SIN (6. * RPI * ZY)
+!         ZVALDY = + 6. * RPI * COS (4. * RPI * ZX) * COS (6. * RPI * ZY)
+          ZVAL = ZX * (1. - ZX) * ZY * (1. - ZY)
+          ZVAL = ZVAL * ZVAL
+          ZVALDX = ZY * (1. - ZY) * ZY * (1. - ZY) * (4. * ZX * ZX * ZX - 6. * ZX * ZX + 2. * ZX)
+          ZVALDX = ZX * (1. - ZX) * ZX * (1. - ZX) * (4. * ZY * ZY * ZY - 6. * ZY * ZY + 2. * ZY)
         ELSE
           ZLAT = + RPI * (0.5_JPRB - REAL (JLAT, JPRB) / REAL (NDGLG+1, JPRB))
           ZLON = 2 * RPI * REAL (JLON-1, JPRB) / REAL (NLOEN (JLAT))
